@@ -1,0 +1,215 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>中点連結・図形探究｜三角形＋四角形</title><style>body{font-family:system-ui,sans-serif;margin:0;padding:18px;background:#f7f9fc;color:#19324b}main{max-width:1000px;margin:auto}button{padding:11px;border:1px solid #a9bdd2;background:white;border-radius:9px;cursor:pointer;font-size:15px}button.active{background:#1765b4;color:white}.color-choice{display:inline-flex;align-items:center;gap:7px;padding:5px 9px;border:1px solid #a9bdd2;border-radius:9px;background:white}.color-choice input{accent-color:#1765b4}.color-options{display:flex;gap:7px;align-items:center;flex-wrap:wrap}nav,.controls{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0}.control-groups{position:relative;z-index:10;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}.control-group{border:1px solid #d6e1ed;background:#fff;border-radius:12px;padding:13px;display:flex;flex-wrap:wrap;align-content:start;gap:9px}.control-group h2{font-size:15px;color:#42566d;width:100%;margin:0 0 3px}.control-group button{flex-grow:1}.control-group .color-options{width:100%;flex-wrap:nowrap;gap:5px;justify-content:flex-start}.control-group .color-choice{white-space:nowrap;flex:1;justify-content:center;padding:7px 5px;margin:0}.control-group .color-options>span{white-space:nowrap;font-size:13px}.control-group .color-choice input{margin:0 3px 0 0}.control-group.utility{background:#f2f6fa}.control-group .hint{font-size:12px;color:#637487;width:100%}.stage{position:sticky;top:0;z-index:1;background:white;box-shadow:0 3px 12px rgba(25,50,75,.10);border:1px solid #d6e1ed;border-radius:12px;padding:8px}svg{width:100%;touch-action:none;user-select:none}label{margin-right:16px}#message{margin-top:12px;color:#42566d}.point{cursor:pointer;touch-action:none}.point.selected{stroke:#ff9c00;stroke-width:5}.point:focus{outline:none;stroke:#ff9c00;stroke-width:5}h1{font-size:23px} .chooser{background:#fff;border:1px solid #d6e1ed;border-radius:12px;padding:18px;margin:16px 0}.chooser>label{font-weight:700;display:block;margin-bottom:10px}.chooser-row{display:flex;gap:10px;flex-wrap:wrap}.chooser-row input{flex:1;min-width:220px;border:1px solid #a9bdd2;border-radius:9px;padding:12px;font-size:17px}.chooser-row .shape-plus{font-size:24px;font-weight:700;align-self:center}.chooser-row input{min-width:120px}.chooser-row button{background:#1765b4;color:white;border-color:#1765b4}.examples{font-size:13px;color:#5c6c7d}.chooser #shapeError{color:#b32636;font-size:14px}.chooser #shapeError:empty{display:none}#simulator[hidden]{display:none}#shapeTitle{font-size:19px}.snapshots{grid-column:auto}.snapshot-grid{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.snapshot-slot{display:flex;flex-direction:column;gap:6px;min-width:0}.snapshot-slot button{font-size:12px;padding:8px 3px}.snapshot-slot button:first-child{background:#eaf4ff;border-color:#9fc6ec;color:#174f85;font-weight:700}.snapshot-slot button:disabled{background:#f1f3f6;border-color:#d9e0e8;color:#8a929b;cursor:not-allowed}.snapshot-slot .save-slot{background:#fff}@media(max-width:440px){.control-groups{grid-template-columns:1fr}.snapshot-slot button{font-size:13px}}
+/* コンパクトな操作ボタンと2件の図形プレビュー */
+.control-groups{gap:8px;margin:9px 0;grid-template-columns:repeat(2,minmax(0,1fr))}
+.control-group{padding:9px;gap:5px;border-radius:9px}
+.control-group h2{font-size:13px;margin-bottom:2px}
+.control-group button{padding:6px 7px;font-size:12px;border-radius:7px;min-height:30px}
+.control-group .hint{font-size:10px;line-height:1.3}
+.control-group .color-choice{padding:4px 3px;font-size:12px}
+.control-group .color-options>span{font-size:11px}
+.snapshot-grid{gap:7px}
+.snapshot-slot{gap:4px;align-items:stretch}
+.snapshot-slot button{padding:5px 2px;font-size:11px;min-height:27px}
+.snapshot-thumb{width:100%;height:75px;object-fit:contain;background:#f5f7fa;border:1px dashed #c3d0de;border-radius:6px;box-sizing:border-box}
+.snapshot-thumb:not(.filled){visibility:hidden;background:repeating-linear-gradient(45deg,#f5f7fa,#f5f7fa 7px,#eaf0f6 7px,#eaf0f6 14px);visibility:visible}
+.control-group.snapshots .hint{font-size:10px}
+@media(max-width:560px){.control-groups{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.control-group{padding:6px}.control-group button{font-size:11px;padding:5px 3px}.snapshot-thumb{height:55px}.control-group .color-options{flex-wrap:wrap}}
+
+/* ①②③をコンパクトに、④のプレビューを大きくする */
+.control-groups{grid-template-columns:minmax(220px,0.82fr) minmax(0,1.75fr);gap:9px;align-items:start}
+.control-group{padding:7px 9px;gap:5px}
+.control-group:nth-child(-n+3){grid-column:1}
+.control-group.snapshots{grid-column:2;grid-row:1 / span 3;align-self:stretch}
+.control-group button{font-size:11px;padding:5px 6px;min-height:27px}
+.control-group h2{font-size:12px}
+.control-group .hint{font-size:10px}
+.snapshot-grid{gap:10px}
+.snapshot-thumb{height:165px;object-fit:contain}
+.snapshot-slot button{font-size:12px;min-height:30px}
+@media(max-width:700px){
+ .control-groups{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px}
+ .control-group:nth-child(-n+3){grid-column:1}
+ .control-group.snapshots{grid-column:2;grid-row:1 / span 3}
+ .snapshot-thumb{height:105px}
+ .snapshot-grid{grid-template-columns:1fr}
+ .control-group .color-options{flex-wrap:wrap}
+}
+@media(max-width:430px){
+ .control-groups{grid-template-columns:1fr}
+ .control-group:nth-child(-n+3),.control-group.snapshots{grid-column:1;grid-row:auto}
+ .snapshot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .snapshot-thumb{height:120px}
+}
+.control-group.snapshots .clear-snapshots{width:100%;font-size:12px;background:#fff6f5;border-color:#e5b5b0;color:#963b34;flex-grow:0}
+/* 操作①②③をもう一段コンパクトに、④の表示領域を拡張 */
+@media(min-width:701px){
+ .control-groups{grid-template-columns:minmax(185px,0.68fr) minmax(0,1.9fr);gap:8px}
+ .control-group{padding:6px 7px;gap:4px}
+ .control-group:nth-child(-n+3) button{font-size:10px;padding:4px 5px;min-height:25px}
+ .control-group:nth-child(-n+3) h2{font-size:11px}
+ .control-group:nth-child(-n+3) .color-choice{font-size:10px;padding:3px 2px}
+ .control-group:nth-child(-n+3) .hint{font-size:9px}
+ .snapshot-thumb{height:195px}
+ .snapshot-grid{gap:12px}
+}
+/* スマホで点を選びやすくする。画面全体のスクロールは図形以外で可能。 */
+.touch-target{cursor:pointer;pointer-events:all;touch-action:none}
+@media(max-width:700px){.stage{top:0}.point{touch-action:none}}
+
+/* iPad横向き：①～④を横一列に並べる */
+@media (orientation:landscape) and (min-width:760px) and (max-width:1400px){
+  main{max-width:1400px}
+  .control-groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,1.65fr);gap:7px;align-items:stretch}
+  .control-group:nth-child(-n+3){grid-column:auto;grid-row:1}
+  .control-group.snapshots{grid-column:4;grid-row:1;align-self:stretch}
+  .control-group{padding:7px;gap:5px;min-width:0}
+  .control-group button{font-size:12px;min-height:32px;padding:5px 4px}
+  .control-group h2{font-size:12px}
+  .control-group .hint{font-size:10px}
+  .control-group .color-options{flex-wrap:wrap}
+  .snapshot-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .snapshot-thumb{height:100px}
+  .snapshot-slot button{font-size:11px;min-height:30px}
+  .stage{position:relative;top:auto}
+}
+</style><main><div id="simulator"><h2 id="shapeTitle"></h2><div class="stage"><svg id="canvas" viewBox="0 0 960 620" aria-label="図形をドラッグして動かせます"></svg></div><div class="control-groups">
+<section class="control-group"><h2>① 点を結ぶ・補助線</h2><button id="toolMove" class="active">点同士を結ぶ</button><button id="clearGuides">補助線を消す</button><div class="hint">点を2つ選ぶと線が引けます。頂点はドラッグできます。</div></section>
+<section class="control-group"><h2>② 書き込み</h2><button id="toolPen">ペン</button><button id="toolEraser">消しゴム</button><div class="color-options" role="group" aria-label="ペンの色"><span>ペンの色：</span><label class="color-choice"><input type="radio" name="penColor" value="#222222" checked>黒</label><label class="color-choice"><input type="radio" name="penColor" value="#e02d35">赤</label><label class="color-choice"><input type="radio" name="penColor" value="#16803c">緑</label></div><button id="clearInk">書き込みを全消去</button></section>
+<section class="control-group utility"><h2>③ 図形の操作</h2><button id="reset">元に戻す</button><div class="hint">図形の初期配置に戻します。</div></section>
+<section class="control-group snapshots"><h2>④ 図形の保存・復元（2件）</h2><div class="snapshot-grid"><div class="snapshot-slot"><img class="snapshot-thumb" id="thumbSlot1" alt="保存1の図形プレビュー"><button type="button" id="restoreSlot1" disabled>保存1：未保存</button><button type="button" id="saveSlot1" class="save-slot">この状態を保存</button><button type="button" id="clearSlot1" class="clear-snapshots">保存1をリセット</button></div><div class="snapshot-slot"><img class="snapshot-thumb" id="thumbSlot2" alt="保存2の図形プレビュー"><button type="button" id="restoreSlot2" disabled>保存2：未保存</button><button type="button" id="saveSlot2" class="save-slot">この状態を保存</button><button type="button" id="clearSlot2" class="clear-snapshots">保存2をリセット</button></div></div><div class="hint">それぞれのリセットボタンで、その保存枠だけを消去します。現在操作中の図形は変わりません。保存内容はページを閉じると消えます。</div></section></div><div id="message">2点を順にクリックすると補助線が引けます。青い頂点はドラッグして動かせます。</div></div></main><script>
+(()=>{const ns='http://www.w3.org/2000/svg',svg=document.getElementById('canvas');const cases={tt:{pts:{A:[370,75],B:[100,540],C:[620,540],D:[750,160]},polys:[['A','B','C'],['D','B','C']],pairs:[['A','B','E'],['A','C','F'],['D','B','G'],['D','C','H']],order:['E','G','H','F']},tq:{pts:{A:[250,110],B:[130,530],C:[600,530],D:[620,260],E:[510,240]},polys:[['A','B','C'],['B','C','D','E']],pairs:[['A','B','F'],['A','C','G'],['B','E','H'],['D','C','J']],order:['F','H','J','G']},qq:{pts:{A:[220,110],B:[120,510],C:[570,510],D:[520,110],E:[390,230],F:[850,310]},polys:[['A','B','C','D'],['B','C','F','E']],pairs:[['A','B','G'],['D','C','H'],['B','E','I'],['C','F','J']],order:['G','H','J','I']}};let mode='tq',reverseTq=false,points={},drag=null,down=null,selected=null,guides=[],mids={},tool='move',penColor='#222222',ink=[],activeInk=null;const make=(tag,attrs={})=>{let n=document.createElementNS(ns,tag);for(let k in attrs)n.setAttribute(k,attrs[k]);return n};const line=(a,b,color='#2d80d4',dash='')=>svg.appendChild(make('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:color,'stroke-width':2.5,'stroke-dasharray':dash}));function pointSegmentDistance(p,a,b){const dx=b[0]-a[0],dy=b[1]-a[1],len=dx*dx+dy*dy;const t=len?Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/len)):0;return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy)}
+function insidePolygon(q, poly){
+  let inside=false;
+  for(let i=0,j=poly.length-1;i<poly.length;j=i++){
+    const a=poly[i],b=poly[j];
+    if(((a[1]>q[1])!==(b[1]>q[1])) && q[0]<(b[0]-a[0])*(q[1]-a[1])/(b[1]-a[1])+a[0])inside=!inside;
+  }
+  return inside;
+}
+function labelPositions(c){
+  const all={...points,...mids},segments=[];
+  const polygons=[...c.polys.map(poly=>poly.map(n=>points[n])),c.order.map(n=>mids[n])];
+  const centroid=polygons.slice(0,-1).flat().reduce((a,p)=>[a[0]+p[0],a[1]+p[1]],[0,0]);
+  const total=polygons.slice(0,-1).flat().length;
+  centroid[0]/=total;centroid[1]/=total;
+  for(const poly of c.polys)for(let i=0;i<poly.length;i++)segments.push([points[poly[i]],points[poly[(i+1)%poly.length]]]);
+  for(let i=0;i<c.order.length;i++)segments.push([mids[c.order[i]],mids[c.order[(i+1)%c.order.length]]]);
+  for(const [a,b] of guides){if(all[a]&&all[b])segments.push([all[a],all[b]])}
+  const offsets=[[17,-17],[-35,-17],[17,34],[-35,34],[28,7],[-47,7],[0,-30],[0,44],[33,-29],[-49,-29],[33,42],[-49,42],[45,-15],[-55,-15],[45,34],[-55,34]];
+  const occupied=[];const result={};
+  for(const [n,p] of Object.entries(all)){
+    const font=Object.hasOwn(mids,n)?27:31;
+    let best=null,bestScore=Infinity;
+    for(const [dx,dy] of offsets){
+      const x=p[0]+dx,y=p[1]+dy;const rect=[x-3,y-font+3,x+font*.75+3,y+5];
+      let score=0;
+      if(rect[0]<8||rect[2]>952||rect[1]<8||rect[3]>612)score+=3000;
+      const samples=[[rect[0],rect[1]],[rect[2],rect[1]],[rect[0],rect[3]],[rect[2],rect[3]],[(rect[0]+rect[2])/2,(rect[1]+rect[3])/2]];
+      // 図形の内側に文字が入る候補を強く避け、外側を優先する。
+      for(const poly of polygons){
+        const insideCount=samples.filter(q=>insidePolygon(q,poly)).length;
+        score+=insideCount*950;
+      }
+      // 図形全体の中心から外に向かう候補を優先する。
+      const center=samples[4], outward=[p[0]-centroid[0],p[1]-centroid[1]];
+      const displacement=[center[0]-p[0],center[1]-p[1]];
+      const outwardLength=Math.hypot(...outward)||1;
+      score-=((displacement[0]*outward[0]+displacement[1]*outward[1])/outwardLength)*2.5;
+      for(const [a,b] of segments){let min=Math.min(...samples.map(q=>pointSegmentDistance(q,a,b)));if(min<13)score+=(13-min)*28+95;}
+      for(const [other,q] of Object.entries(all)){if(other===n)continue;const d=pointSegmentDistance(q,[rect[0],rect[1]],[rect[2],rect[3]]);if(q[0]>=rect[0]-9&&q[0]<=rect[2]+9&&q[1]>=rect[1]-9&&q[1]<=rect[3]+9)score+=400;else if(d<12)score+=60;}
+      for(const r of occupied){const overlapX=Math.max(0,Math.min(rect[2],r[2])-Math.max(rect[0],r[0]));const overlapY=Math.max(0,Math.min(rect[3],r[3])-Math.max(rect[1],r[1]));score+=overlapX*overlapY*2;}
+      score+=Math.hypot(dx,dy)*.07;
+      if(score<bestScore){bestScore=score;best={x,y,rect}};
+    }
+    result[n]=best;occupied.push(best.rect);
+  }
+  return result;
+}
+// 四角形＋三角形では、旧Dの位置をAとして、四角形を反時計回りにA,B,C,Dと命名する。
+function currentCase(){
+  if(mode!=='tq'||!reverseTq)return cases[mode];
+  const base=cases.tq;
+  const rename={A:'E',B:'C',C:'B',D:'A',E:'D'};
+  const midpointRename={J:'F',F:'G',G:'H',H:'J'};
+  const pts={};
+  for(const [oldName,p] of Object.entries(base.pts))pts[rename[oldName]]=[960-p[0],p[1]];
+  return {
+    pts,
+    polys:[base.polys[1].map(n=>rename[n]),base.polys[0].map(n=>rename[n])],
+    pairs:base.pairs.map(([a,b,m])=>[rename[a],rename[b],midpointRename[m]]),
+    order:base.order.map(m=>midpointRename[m])
+  };
+}
+function render(){svg.replaceChildren();let c=currentCase();for(let poly of c.polys){svg.appendChild(make('polygon',{points:poly.map(n=>points[n].join(',')).join(' '),fill:'#7daee0','fill-opacity':'.14',stroke:'#287ed4','stroke-width':3}))}mids={};for(let [a,b,n] of c.pairs)mids[n]=[(points[a][0]+points[b][0])/2,(points[a][1]+points[b][1])/2];{let order=c.order;svg.appendChild(make('polygon',{points:order.map(n=>mids[n].join(',')).join(' '),fill:'#cf3155','fill-opacity':'.15',stroke:'#cf3155','stroke-width':3.2,'stroke-linejoin':'round'}))}for(let [a,b] of guides){let x=points[a]||mids[a],y=points[b]||mids[b];if(x&&y)line(x,y,'#e09017','8 5')}
+// ペンで描いた線は図形の上に重ねて表示する。
+for(const stroke of ink){if(stroke.points.length<1)continue;svg.appendChild(make('polyline',{points:stroke.points.map(p=>p.join(',')).join(' '),fill:'none',stroke:stroke.color,'stroke-width':4.5,'stroke-linecap':'round','stroke-linejoin':'round','pointer-events':'none'}))}
+const labels=labelPositions(c);
+for(let [n,p] of Object.entries(mids)){svg.appendChild(make('circle',{cx:p[0],cy:p[1],r:9,fill:'#777',stroke:selected===n?'#ff9c00':'#fff','stroke-width':selected===n?5:1,class:'point','data-name':n,tabindex:0,role:'button','aria-label':'点'+n}));let t=make('text',{x:labels[n].x,y:labels[n].y,'font-size':27,fill:'#68717c',stroke:'#fff','stroke-width':5,'paint-order':'stroke','pointer-events':'none'});t.textContent=n;svg.appendChild(t)}for(let [n,p] of Object.entries(points)){let circle=make('circle',{cx:p[0],cy:p[1],r:8,fill:'#1970bc',stroke:'#163955','stroke-width':1.5,class:'point'+(selected===n?' selected':''),'data-name':n,tabindex:0,role:'button','aria-label':'点'+n});svg.appendChild(circle);let text=make('text',{x:labels[n].x,y:labels[n].y,'font-size':31,fill:'#1466bd',stroke:'#fff','stroke-width':5,'paint-order':'stroke','pointer-events':'none'});text.textContent=n;svg.appendChild(text)}
+// 指で押しやすい透明のタッチ領域。見た目の点は従来どおり。
+for(const [n,p] of Object.entries({...mids,...points})){
+ const hit=make('circle',{cx:p[0],cy:p[1],r:23,fill:'transparent',stroke:'none',class:'touch-target','data-name':n,role:'button','aria-label':'点'+n});
+ svg.appendChild(hit);
+}}
+function reset(){selected=null;guides=[];ink=[];activeInk=null;points=JSON.parse(JSON.stringify(currentCase().pts));render()}function pointer(e){let r=svg.getBoundingClientRect();return [Math.max(20,Math.min(940,(e.clientX-r.left)*960/r.width)),Math.max(20,Math.min(600,(e.clientY-r.top)*620/r.height))]}function choose(n){if(!n)return;if(selected===null){selected=n;document.getElementById('message').textContent='点'+n+'を選択しました。2点目を選んでください。'}else if(selected===n){selected=null;document.getElementById('message').textContent='選択を解除しました。'}else{if(!guides.some(([a,b])=>(a===selected&&b===n)||(a===n&&b===selected)))guides.push([selected,n]);document.getElementById('message').textContent=selected+' と '+n+' を結びました。別の2点も選べます。';selected=null;}render()}
+svg.addEventListener('pointerdown',e=>{
+if(tool==='pen'){activeInk={points:[pointer(e)],color:penColor};ink.push(activeInk);svg.setPointerCapture(e.pointerId);render();return}
+if(tool==='eraser'){const p=pointer(e);let best=-1,dist=18;ink.forEach((stroke,i)=>{for(let j=0;j<stroke.points.length;j++){const d=j?pointSegmentDistance(p,stroke.points[j-1],stroke.points[j]):Math.hypot(p[0]-stroke.points[j][0],p[1]-stroke.points[j][1]);if(d<dist){dist=d;best=i}}});if(best>=0){ink.splice(best,1);render()}return}
+let n=e.target.dataset.name;
+if(!n){const p=pointer(e);let best=Infinity;for(const [name,q] of Object.entries({...mids,...points})){const d=Math.hypot(p[0]-q[0],p[1]-q[1]);if(d<best&&d<28){best=d;n=name}}}
+if(!n)return;down={n,start:[e.clientX,e.clientY],moved:false};svg.setPointerCapture(e.pointerId)});
+svg.addEventListener('pointermove',e=>{if(tool==='pen'&&activeInk){activeInk.points.push(pointer(e));render();return}if(!down)return;let dist=Math.hypot(e.clientX-down.start[0],e.clientY-down.start[1]);if(dist>5&&Object.hasOwn(points,down.n)){down.moved=true;points[down.n]=pointer(e);render()}});
+svg.addEventListener('pointerup',e=>{if(activeInk){activeInk=null;render();return}if(!down)return;const d=down;down=null;if(!d.moved)choose(d.n)});
+svg.addEventListener('pointercancel',()=>{down=null;activeInk=null});
+svg.addEventListener('keydown',e=>{if(tool!=='move')return;if((e.key==='Enter'||e.key===' ')&&e.target.dataset.name){e.preventDefault();choose(e.target.dataset.name)}});
+function setTool(next){tool=next;down=null;activeInk=null;selected=null;document.getElementById('toolMove').classList.toggle('active',tool==='move');document.getElementById('toolPen').classList.toggle('active',tool==='pen');document.getElementById('toolEraser').classList.toggle('active',tool==='eraser');document.getElementById('message').textContent=tool==='pen'?'図の上をなぞると書き込めます。':tool==='eraser'?'消したい書き込みをクリックしてください。':'2点を順にクリックすると補助線が引けます。青い頂点はドラッグできます。';render()}
+document.getElementById('toolMove').addEventListener('click',()=>setTool('move'));
+document.getElementById('toolPen').addEventListener('click',()=>setTool('pen'));document.querySelectorAll('input[name=penColor]').forEach(input=>input.addEventListener('change',()=>{if(input.checked){penColor=input.value;setTool('pen')}}));
+document.getElementById('toolEraser').addEventListener('click',()=>setTool('eraser'));
+document.getElementById('clearInk').addEventListener('click',()=>{ink=[];activeInk=null;render()});
+document.getElementById('clearGuides').addEventListener('click',()=>{guides=[];selected=null;document.getElementById('message').textContent='補助線を消しました。';render()});
+document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;reset();document.getElementById('message').textContent='2点を順にクリックすると補助線が引けます。'}));document.getElementById('reset').addEventListener('click',reset);
+
+
+// 各図形パネルごとに独立した2つのスナップショット
+const snapshots=[null,null];
+function snapshotState(){return JSON.parse(JSON.stringify({points,guides,ink,mode,reverseTq}));}
+function restoreSnapshot(index){
+  const snap=snapshots[index];if(!snap)return;
+  const state=JSON.parse(JSON.stringify(snap));
+  points=state.points;guides=state.guides;ink=state.ink;
+  mode=state.mode;reverseTq=state.reverseTq;
+  selected=null;down=null;drag=null;activeInk=null;
+  render();
+  document.getElementById('message').textContent='保存'+(index+1)+'の図形を復元しました。';
+}
+for(let i=0;i<2;i++){
+  const restore=document.getElementById('restoreSlot'+(i+1));
+  document.getElementById('saveSlot'+(i+1)).addEventListener('click',()=>{
+    snapshots[i]=snapshotState();
+    const preview=svg.cloneNode(true);
+    preview.setAttribute('xmlns',ns);
+    preview.setAttribute('width','480');preview.setAttribute('height','310');
+    const bg=make('rect',{x:0,y:0,width:960,height:620,fill:'#ffffff'});
+    preview.insertBefore(bg,preview.firstChild);
+    const thumb=document.getElementById('thumbSlot'+(i+1));
+    thumb.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(preview));
+    thumb.classList.add('filled');
+    restore.disabled=false;restore.textContent='保存'+(i+1)+'を復元';
+    document.getElementById('message').textContent='現在の図形を保存'+(i+1)+'に記録しました。';
+  });
+  restore.addEventListener('click',()=>restoreSnapshot(i));
+}
+
+for(let i=0;i<2;i++){
+  document.getElementById('clearSlot'+(i+1)).addEventListener('click',()=>{
+    snapshots[i]=null;
+    const thumb=document.getElementById('thumbSlot'+(i+1));
+    thumb.removeAttribute('src');thumb.classList.remove('filled');
+    const restore=document.getElementById('restoreSlot'+(i+1));
+    restore.disabled=true;restore.textContent='保存'+(i+1)+'：未保存';
+    document.getElementById('message').textContent='保存'+(i+1)+'だけをリセットしました。現在の図形と他の保存枠はそのままです。';
+  });
+}
+
+document.getElementById('shapeTitle').textContent='三角形＋四角形';reset()})();
+</script></html>
